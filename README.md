@@ -3,10 +3,15 @@
 * This application is awesome!
 
 * You need this application
+## Possible Ideas:
+* Car ride sharing app
+    * App that helps users connect with other individuals to carpool to their job, gym, church, etc 
+ * Any type of delivery service
+   *  App that connects people with a delivery services that allowes them to deliver gifts, flowers, candy, food, and misc items 
 
 
-
-## This is how it works: 
+## This is how it works:
+ 
 
 
 ## Technologies:
