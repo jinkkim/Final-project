@@ -2,6 +2,8 @@
 Name TBD
 The goal of our app is to strengthen relationships between couples. 
 
+https://dleiva345.github.io/Final-project/
+
 ## This is how it works:
 The app will have a few features that will keep couples in perfect harmony:
    * Messaging - where couples can stay in constant contact with each other throughout the day and send emojis/giphys
