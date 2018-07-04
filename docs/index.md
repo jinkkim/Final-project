@@ -21,4 +21,5 @@ Project Management Boad (Trello):
 ![alt text](https://github.com/dleiva345/Final-project/blob/master/docs/Trello.png)
 
 
-Screen-by-Screen Design:
+Page layouts:
+![alt text](https://github.com/dleiva345/Final-project/blob/master/docs/pagelayout.png)
