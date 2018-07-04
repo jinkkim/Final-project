@@ -15,6 +15,6 @@ Marika Manuud will own messaging and phone.
 * July 24 - Presentation
 
 #Project Management Boad (Trello):
-![alt text](http://url/to/img.png)
+![alt text](https://github.com/dleiva345/Final-project/blob/master/docs/Trello.png)
 
 #Screen-by-Screen Design:
