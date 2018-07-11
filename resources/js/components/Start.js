@@ -43,14 +43,16 @@ export class Start extends Component {
                 window.location="/";
             }
             
+        })
+        .catch(function(err){
+            console.log(err);
         });
     }
 
     render() {
         return (
             <div>
-                <p className = 'col-6 offset-3 display-3 mb-5 border' Your logo here></p>
-                
+                <p className= 'col-6 offset-3 display-3 mb-5 border'>Your logo here</p>
                 <form className= 'mb-5 col-6 offset-3' onSubmit={this.handleSubmit}  method='POST'  > 
                     <div className="form-group">
                       <label htmlFor="email">Email address</label>
