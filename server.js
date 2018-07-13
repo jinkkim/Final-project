@@ -38,8 +38,8 @@ connection.connect(function(err){
 //MongoDB connection////////////////////////////
 var mongoose = require("mongoose");
 mongoose.Promise = Promise;
-var mongoDBUrl = "mongodb://localhost:27017/letlovegrow";
-// var mongoDBUrl = "mongodb://heroku_0mn17js6:umvht39kmt3dqbdmaqhs54tpl0@ds129831.mlab.com:29831/heroku_0mn17js6"
+// var mongoDBUrl = "mongodb://localhost:27017/letlovegrow";
+var mongoDBUrl = "mongodb://heroku_0mn17js6:umvht39kmt3dqbdmaqhs54tpl0@ds129831.mlab.com:29831/heroku_0mn17js6"
 mongoose.connect(mongoDBUrl, function(error)
 	{
 	console.log("MongoDB connected");
@@ -84,8 +84,8 @@ app.post('/login', function(req,res,next){
     var login_state = JSON.stringify({email: false});
     var loginFail = JSON.parse(login_state);
 
-    //connection.query('SELECT * FROM cuf1fe0mumop56af.users WHERE `email` = ? AND `password` = ?', [req.body.email,req.body.password], function (error, results, fields) {
-    connection.query('SELECT * FROM user_info.users WHERE `email` = ? AND `password` = ?', [req.body.email,req.body.password], function (error, results, fields) {
+    connection.query('SELECT * FROM cuf1fe0mumop56af.users WHERE `email` = ? AND `password` = ?', [req.body.email,req.body.password], function (error, results, fields) {
+   // connection.query('SELECT * FROM user_info.users WHERE `email` = ? AND `password` = ?', [req.body.email,req.body.password], function (error, results, fields) {
         if(error) {
             console.log(error);
         }
