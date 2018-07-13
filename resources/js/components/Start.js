@@ -6,7 +6,7 @@ export class Start extends Component {
         super(props)
         this.state = {
             email:'',
-            password:'',
+            password:''
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
