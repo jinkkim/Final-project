@@ -18,15 +18,7 @@ app.use(function(req, res, next){
 //mysql connection //////////////////////////////////////////
 var mysql = require('mysql2');
 
-// const connection = mysql.createConnection({
-//     host:'ou6zjjcqbi307lip.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-//     port: 3306,
-//     user:'r0v2n7b4vnjmn7mg',
-//     password: 'u1ep4o0id3hsj3ot',
-//     database: 'cuf1fe0mumop56af'
-// });
-
-const connection = mysql.createConnection({
+const connection = mysql.createConnection(process.env.JAWSDB_URL || {
    host:'localhost',
    port: 3306,
    user:'root',
