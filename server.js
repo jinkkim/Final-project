@@ -60,9 +60,9 @@ app.post('/signup', function(req,res,next){
     } else {
         temp_key = Math.random().toString(36).slice(-5);
     }
-    
-    //connection.query("INSERT INTO cuf1fe0mumop56af.users (couple_key, email, password, first_name, last_name) VALUES (?, ?, ?, ?, ?)",
-    connection.query("INSERT INTO user_info.users (couple_key, email, password, first_name, last_name, birthday, anniversary, photo, photo_couple) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+
+    //connection.query("INSERT INTO users (couple_key, email, password, first_name, last_name, birthday, anniversary, photo, photo_couple) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    connection.query("INSERT INTO cuf1fe0mumop56af.users (couple_key, email, password, first_name, last_name, birthday, anniversary, photo, photo_couple) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
         temp_key,
         body.email,
@@ -84,8 +84,8 @@ app.post('/login', function(req,res,next){
     var login_state = JSON.stringify({email: false});
     var loginFail = JSON.parse(login_state);
 
+    // connection.query('SELECT * FROM user_info.users WHERE `email` = ? AND `password` = ?', [req.body.email,req.body.password], function (error, results, fields) {
     connection.query('SELECT * FROM cuf1fe0mumop56af.users WHERE `email` = ? AND `password` = ?', [req.body.email,req.body.password], function (error, results, fields) {
-   // connection.query('SELECT * FROM user_info.users WHERE `email` = ? AND `password` = ?', [req.body.email,req.body.password], function (error, results, fields) {
         if(error) {
             console.log(error);
         }
