@@ -72,6 +72,7 @@ export class Mypage extends Component {
                             <Album      couple_key={this.state.couple_key}
                                         albums={this.state.albums}
                                         last_one={this.state.last_one}
+                                        fetchAlbum={this.fetchAlbum}
                                          />
                         </div>
 

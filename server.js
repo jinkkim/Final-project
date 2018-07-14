@@ -18,12 +18,20 @@ app.use(function(req, res, next){
 //mysql connection //////////////////////////////////////////
 var mysql = require('mysql2');
 
-const connection = mysql.createConnection(process.env.JAWSDB_URL || {
-   host:'localhost',
-   port: 3306,
-   user:'root',
-   password: '1234',
-   database: 'user_info'
+//const connection = mysql.createConnection(process.env.JAWSDB_URL || {
+//   host:'localhost',
+//   port: 3306,
+//   user:'root',
+//   password: '1234',
+//   database: 'user_info'
+//});
+
+const connection = mysql.createConnection({
+    host:'ou6zjjcqbi307lip.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+    port: 3306,
+    user:'r0v2n7b4vnjmn7mg',
+    password: 'u1ep4o0id3hsj3ot',
+    database: 'cuf1fe0mumop56af'
 });
 
 
@@ -104,22 +112,22 @@ app.post('/login', function(req,res,next){
 
 
 //Album loading from mongoDB ////////////////////////////////////////////////
-//app.post('/albumUpload', function(req,res){
-//    var couple_key = JSON.stringify(req.body.couple_key);
-//    var newAlbum = {
-//        couple_key:couple_key,
-//        photo_link:'',
-//        date:'',
-//        descr:''
-//    }
-//
-//    Album.create(newAlbum, function(err, results){
-//        if(err) {
-//            console.log(err)
-//        }
-//		console.log("Record Added");
-//    })
-//})
+app.post('/albumUpload', function(req,res){
+    var couple_key = JSON.stringify(req.body.couple_key);
+    var newAlbum = {
+        couple_key:couple_key,
+        photo_link:'',
+        date:'',
+        descr:''
+    }
+
+    Album.create(newAlbum, function(err, results){
+        if(err) {
+            console.log(err)
+        }
+		console.log("Record Added");
+    })
+})
 
 //load photo albums from MongoDB with matching couple_key
 app.post('/album', function(req, res){
