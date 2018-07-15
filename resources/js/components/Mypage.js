@@ -3,7 +3,9 @@ import React, { Component } from 'react'
 import { Nav } from './mypageView/Nav'
 import { Profile } from './mypageView/Profile'
 import { Album } from './mypageView/Album'
-
+import { HoneyDo } from './mypageView/Honeydo'
+import { Calendar } from './mypageView/Calendar'
+import { Msg } from './mypageView/Message'
 
 export class Mypage extends Component {
     constructor(props) {
@@ -20,9 +22,11 @@ export class Mypage extends Component {
             photo_couple: this.props.photo_couple,
             last_one:[],
             albums: []
-            
         }
-        this.fetchAlbum = this.fetchAlbum.bind(this)
+        this.fetchAlbum = this.fetchAlbum.bind(this),        
+        this.fetchHoneyDo = this.fetchHoneyDo.bind(this),
+        this.fetchCalendar = this.fetchCalendar.bind(this),
+        this.fetchMsg = this.fetchMsg.bind(this)
     }
     
     fetchAlbum = (couple_key) => {
@@ -50,6 +54,74 @@ export class Mypage extends Component {
 
     }
 
+    fetchHoneyDo = (couple_key) => {
+        var query = {
+            'couple_key' : couple_key
+        }
+        fetch('/honeyDo', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(query)
+        })
+        .then((response) => {
+            if (response.status >= 400) {
+                console.log("Bad response from server");
+            }
+            return response.json()
+        })
+        .then((data) => {
+            this.setState({
+                honeyDos: data                
+            })
+        })
+
+    }
+
+    fetchCalendar = (couple_key) => {
+        var query = {
+            'couple_key' : couple_key
+        }
+        fetch('/calendar', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(query)
+        })
+        .then((response) => {
+            if (response.status >= 400) {
+                console.log("Bad response from server");
+            }
+            return response.json()
+        })
+        .then((data) => {
+            this.setState({
+                calendars: data                
+            })
+        })
+
+    }
+    fetchMsg = (couple_key) => {
+        var query = {
+            'couple_key' : couple_key
+        }
+        fetch('/msg', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(query)
+        })
+        .then((response) => {
+            if (response.status >= 400) {
+                console.log("Bad response from server");
+            }
+            return response.json()
+        })
+        .then((data) => {
+            this.setState({
+                msgs: data                
+            })
+        })
+
+    }
+
     render(){
         if(this.state.albums.length === 0) {
             this.fetchAlbum(this.state.couple_key);
@@ -67,22 +139,32 @@ export class Mypage extends Component {
                                         birthday={this.state.birthday}
                                         anniversary={this.state.anniversary}
                                         photo={this.state.photo}
-                                        photo_couple={this.state.photo_couple} />
+                                        photo_couple={this.state.photo_couple} 
+                            />
                                         
                             <Album      couple_key={this.state.couple_key}
                                         albums={this.state.albums}
                                         last_one={this.state.last_one}
                                         fetchAlbum={this.fetchAlbum}
-                                         />
+                            />
                         </div>
 
-                        <div className='col col-5'>
+                        <div className='col col-4'>
                             <div className="container p-5 border text-center"><br /><br />Mood area<br /><br /></div>
-                            <div className="container p-5 border text-center"><br /><br />Message area<br /><br /></div>
+                            <Msg      couple_key={this.state.couple_key}
+                                        msgs={this.state.msgs}
+                                        fetchMsg={this.fetchMsg}
+                            />
                         </div>
-                        <div className='col col-3'>
-                            <div className="container p-5 border text-center"><br /><br />Calendar area<br /><br /></div>
-                            <div className="container p-5 border text-center"><br /><br />Todo area<br /><br /></div>
+                        <div className='col col-4'>
+                            <Calendar   couple_key={this.state.couple_key}
+                                        calendars={this.state.calendars}
+                                        fetchCalendar={this.fetchCalendar}
+                            />
+                            <HoneyDo    couple_key={this.state.couple_key}
+                                        honeyDos={this.state.honeyDos}
+                                        fetchHoneyDo={this.fetchHoneyDo}
+                            />
                         </div>
 
                     </div>
