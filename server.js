@@ -55,9 +55,11 @@ mongoose.connect(mongoDBUrl, function(error)
 
 const Album = require('./resources/db/models/AlbumDB.js');
 //const Message = require('./resources/db/models/MessageDB.js');
+const HoneyDo = require('./resources/db/models/HoneyDoDB.js');
+const Calendar = require('./resources/db/models/CalendarDB.js');
+const Msg = require('./resources/db/models/MessageDB.js');
+
 /////////////////////////////////////////////////
-
-
 
 //signup with MySQL///////////////////////////
 app.post('/signup', function(req,res,next){
@@ -110,7 +112,6 @@ app.post('/login', function(req,res,next){
 })
 //////////////////////////////////////////////////////////////////////////////
 
-
 //Album loading from mongoDB ////////////////////////////////////////////////
 app.post('/albumUpload', function(req,res){
     var couple_key = JSON.stringify(req.body.couple_key);
@@ -121,7 +122,7 @@ app.post('/albumUpload', function(req,res){
         descr:''
     }
 
-    Album.create(newAlbum, function(err, results){
+    Album.create(newHoneyDo, function(err, results){
         if(err) {
             console.log(err)
         }
@@ -142,6 +143,98 @@ app.post('/album', function(req, res){
 })
 /////////////////////////////////////////////////////////////////////////////
 
+//Add honeyDo to mongoDB ////////////////////////////////////////////////
+app.post('/honeyDoAdd', function(req,res){
+    var couple_key = JSON.stringify(req.body.couple_key);
+    var newHoneyDo = {
+        couple_key:couple_key,
+        task:'',
+        assigned_to:'',
+        due_date:''
+    }
+
+    HoneyDo.create(newHoneyDo, function(err, results){
+        if(err) {
+            console.log(err)
+        }
+		console.log("HoneyDo Added");
+    })
+})
+
+//load honeyDo MongoDB with matching couple_key
+app.post('/honeyDo', function(req, res){
+    var couple_key = JSON.stringify(req.body.couple_key);
+
+    HoneyDo.find({'couple_key': couple_key}, function(err, results){
+        if (err) {
+            console.log(err);
+        }
+        res.send(results)
+    })
+})
+/////////////////////////////////////////////////////////////////////////////
+
+//Add Calendar Event to mongoDB ////////////////////////////////////////////////
+app.post('/calendarAdd', function(req,res){
+    var couple_key = JSON.stringify(req.body.couple_key);
+    var newCalendar = {
+        couple_key:couple_key,
+        event:'',
+        date:'',
+        time:''
+    }
+
+    Calendar.create(newCalendar, function(err, results){
+        if(err) {
+            console.log(err)
+        }
+		console.log("Calendar Event Added");
+    })
+})
+
+//load Calendar from MongoDB with matching couple_key
+app.post('/calendar', function(req, res){
+    var couple_key = JSON.stringify(req.body.couple_key);
+
+    Calendar.find({'couple_key': couple_key}, function(err, results){
+        if (err) {
+            console.log(err);
+        }
+        res.send(results)
+    })
+})
+/////////////////////////////////////////////////////////////////////////////
+
+//Add message to mongoDB ////////////////////////////////////////////////
+app.post('/msgAdd', function(req,res){
+    var couple_key = JSON.stringify(req.body.couple_key);
+    var newMsg = {
+        couple_key:couple_key,
+        date:'',
+        poster:'',
+        msg:''
+    }
+
+    Msg.create(newAlbum, function(err, results){
+        if(err) {
+            console.log(err)
+        }
+		console.log("Message Added");
+    })
+})
+
+//load messages from MongoDB with matching couple_key
+app.post('/msg', function(req, res){
+    var couple_key = JSON.stringify(req.body.couple_key);
+
+    Msg.find({'couple_key': couple_key}, function(err, results){
+        if (err) {
+            console.log(err);
+        }
+        res.send(results)
+    })
+})
+/////////////////////////////////////////////////////////////////////////////
 
 // Default route.
 app.use('/', function (req, res) {

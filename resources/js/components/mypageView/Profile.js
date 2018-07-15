@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 export const Profile = ({couple_key, email, first_name,last_name,birthday,anniversary,photo,photo_couple}) => (
     <div id='profile'>
-        <div className='card-header p-0 border'>Profile</div>
+        <div className='card-header p-2 border mt-1'>Profile</div>
         <div className='card-body border'>
             <div className='clearfix'>
                 <p className="mb-0">You</p>
