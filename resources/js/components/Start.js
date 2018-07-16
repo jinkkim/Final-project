@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import Logo from '../../images/logo.png'
 
 export class Start extends Component {
     constructor(props) {
@@ -52,7 +53,8 @@ export class Start extends Component {
     render() {
         return (
             <div>
-                <p className= 'col-6 offset-3 display-3 mb-5 border'>Your logo here</p>
+                
+                <div className= 'container col-9 offset-3 my-4'><img src={Logo}></img></div>
                 <form className= 'mb-5 col-6 offset-3' onSubmit={this.handleSubmit}  method='POST'  > 
                     <div className="form-group">
                       <label htmlFor="email">Email address</label>

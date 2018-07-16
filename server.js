@@ -54,7 +54,6 @@ mongoose.connect(mongoDBUrl, function(error)
 });
 
 const Album = require('./resources/db/models/AlbumDB.js');
-//const Message = require('./resources/db/models/MessageDB.js');
 const HoneyDo = require('./resources/db/models/HoneyDoDB.js');
 const Calendar = require('./resources/db/models/CalendarDB.js');
 const Msg = require('./resources/db/models/MessageDB.js');
@@ -116,13 +115,13 @@ app.post('/login', function(req,res,next){
 app.post('/albumUpload', function(req,res){
     var couple_key = JSON.stringify(req.body.couple_key);
     var newAlbum = {
-        couple_key:couple_key,
-        photo_link:'',
-        date:'',
-        descr:''
+        couple_key: couple_key,
+        photo_link: req.body.photo_link,
+        date: req.body.date,
+        descr: req.body.descr
     }
 
-    Album.create(newHoneyDo, function(err, results){
+    Album.create(newAlbum, function(err, results){
         if(err) {
             console.log(err)
         }

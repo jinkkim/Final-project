@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Album = ({couple_key, albums, last_one, fetchAlbum}) => (
+export const Album = ({couple_key, albums, last_one}) => (
     <div id='album'>
     
         <div className='card-header p-2 border mt-1' data-toggle="modal" data-target="#albumModal">Album (click here to modify)</div>
@@ -52,7 +52,7 @@ export const Album = ({couple_key, albums, last_one, fetchAlbum}) => (
                 </form>
                 <hr></hr>
                 <div className="row justify-content-around">
-                    {/* {albums.map((album) => (
+                    {albums.map((album) => (
                         <div className="card" style={{"width": "11rem"}}>
                             <img className="card-img-top" src={album.photo_link} height="100"></img>
                             <div className="card-body">
@@ -64,7 +64,7 @@ export const Album = ({couple_key, albums, last_one, fetchAlbum}) => (
                                 </div>
                             </div>
                         </div>
-                    ))} */}
+                    ))}
                 </div>
 
             </div>
@@ -81,7 +81,7 @@ export const Album = ({couple_key, albums, last_one, fetchAlbum}) => (
             <div id="AlbumCarousel" className="carousel slide" data-ride="carousel">
                 <div className="carousel-inner">
                     
-                    {/* {albums.map((album) => (
+                    {albums.map((album) => (
                         <div className="carousel-item">
                             <img className="d-block w-100" src={album.photo_link}></img>
                             <div className="carousel-caption">
@@ -89,7 +89,7 @@ export const Album = ({couple_key, albums, last_one, fetchAlbum}) => (
                                 <p>{album.descr}</p>
                             </div>
                         </div>
-                    ))}  */}
+                    ))} 
                     <div className="carousel-item active">
                         <img className="d-block w-100" src={last_one.photo_link}></img>
                         <div className="carousel-caption">
