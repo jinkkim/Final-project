@@ -35,21 +35,21 @@ export const HoneyDo = ({couple_key, honeyDos, fetchHoneyDo}) => (
                         <div className="form-group row">
                             <label htmlFor="inputDescription" className="col-sm-2 col-form-label">Honey Do*</label>
                             <div className="col-sm-10">
-                            <input type="text" className="form-control" id="inputDescription" name="descr" placeholder="Description"></input>
+                            <input type="text" className="form-control" id="inputTask" name="task" placeholder="Description"></input>
                             </div>
                         </div>
 
                         <div className="form-group row">
                             <label htmlFor="inputDescription" className="col-sm-2 col-form-label">Honey*</label>
                             <div className="col-sm-10">
-                            <input type="text" className="form-control" id="inputDescription" name="descr" placeholder="Name"></input>
+                            <input type="text" className="form-control" id="inputAssigned_to" name="assigned_to" placeholder="Name"></input>
                             </div>
                         </div>
 
                         <div className="form-group row">
                             <label htmlFor="inputDate" className="col-sm-2 col-form-label">Honey Do By*</label>
                             <div className="col-sm-10">
-                            <input type="date" className="form-control" id="inputDate" name="date" placeholder="MM/DD/YYYY"></input>
+                            <input type="date" className="form-control" id="inputDue_date" name="due_date" placeholder="MM/DD/YYYY"></input>
                             </div>
                         </div>
 

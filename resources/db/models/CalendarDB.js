@@ -12,11 +12,8 @@ var CalendarSchema = new Schema({
   date: {
     type: Date,
     required: true
-  },
-  time: {
-    type: Date,
-    required: true
   }
+ 
 });
 
 var Calendar = mongoose.model("Calendar", CalendarSchema);
