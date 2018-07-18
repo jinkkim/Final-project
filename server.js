@@ -147,9 +147,9 @@ app.post('/honeyDoAdd', function(req,res){
     var couple_key = JSON.stringify(req.body.couple_key);
     var newHoneyDo = {
         couple_key:couple_key,
-        task:'',
-        assigned_to:'',
-        due_date:''
+        task: req.body.task,
+        assigned_to: req.body.assigned_to,
+        due_date: req.body.due_date 
     }
 
     HoneyDo.create(newHoneyDo, function(err, results){
@@ -177,10 +177,10 @@ app.post('/honeyDo', function(req, res){
 app.post('/calendarAdd', function(req,res){
     var couple_key = JSON.stringify(req.body.couple_key);
     var newCalendar = {
-        couple_key:couple_key,
-        event:'',
-        date:'',
-        time:''
+        couple_key: couple_key,
+        event: req.body.event,
+        date: req.body.date,
+
     }
 
     Calendar.create(newCalendar, function(err, results){
