@@ -35,7 +35,24 @@ export class Mypage extends Component {
             events:{},
             thisMonth: new Date().getMonth(),
             honey_dos:[],
-            honey_do:''
+            honey_do:'',
+
+            modifiers : {
+                //thursdays: { daysOfWeek: [4] },
+                birthday: new Date(2018, 6, 24)
+            },
+
+           modifiersStyles : {
+                birthday: {
+                  color: 'white',
+                  backgroundColor: '#ffc107'
+                },
+                //thursdays: {
+                  //color: '#ffc107',
+                  //backgroundColor: '#fffdee'
+                //}
+            }
+
         }
 
         //establish socket.io connection (client side)
@@ -48,8 +65,8 @@ export class Mypage extends Component {
             console.log(msg);
             this.setState({messages: [...this.state.messages, msg]});
             console.log(this.state.messages);
-        }
-            
+        }          
+
         this.handleMessenger = event => {
             event.preventDefault();
             var data = {name:this.state.first_name, message: this.state.message};
@@ -67,8 +84,7 @@ export class Mypage extends Component {
             this.setState({messages: [...this.state.messages, msg]});
             ////////////////
             this.setState({message: ''});
-        }
-
+        
 
         this.fetchAlbum = this.fetchAlbum.bind(this);
         this.fetchHistory = this.fetchHistory.bind(this);
@@ -76,6 +92,7 @@ export class Mypage extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleCheck = this.handleCheck.bind(this);
 
+        }
     }
 
     componentDidMount() {
@@ -228,19 +245,19 @@ export class Mypage extends Component {
                                         photo={this.state.photo}
                                         photo_couple={this.state.photo_couple}/>
                             
-                        <div class="p-5 border text-center"><br></br>Mood area<br></br></div>
-
+                        
+                            <Album      couple_key={this.state.couple_key}
+                                        albums={this.state.albums}
+                                        last_one={this.state.last_one}
+                                        fetchAlbum={this.fetchAlbum} 
+                                        handleChange={this.handleChange} />
                             
                             
                         </div>
 
                         <div className='m-0 col-4'>
                        
-                            <Album  couple_key={this.state.couple_key}
-                                    albums={this.state.albums}
-                                    last_one={this.state.last_one}
-                                    fetchAlbum={this.fetchAlbum} 
-                                    handleChange={this.handleChange} />
+                        <div class="p-5 border text-center"><br></br>Mood area<br></br></div>
                             
                             <Messages first_name={this.state.first_name}
                                       messages={this.state.messages}
@@ -255,7 +272,11 @@ export class Mypage extends Component {
                                 <History couple_key={this.state.couple_key} />
                             <div className='card-body border'>
                                 <Calendar renderDay={this.renderDay}
-                                          handleClick={this.handleClick} />
+                                          handleClick={this.handleClick}
+                                            month={new Date(2018, 6)}
+                                            modifiers={this.state.modifiers}
+                                            modifiersStyles={this.state.modifiersStyles}
+                                             />
                             </div>
                             <HoneyDo honey_do={this.state.honey_do}
                                     honey_dos={this.state.honey_dos}

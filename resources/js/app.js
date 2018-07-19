@@ -48,7 +48,8 @@ export class App extends Component {
             return <Redirect to='' />
         }
     }
-
+    //
+    //
     render(){
         return (
             <Router>
