@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
-var CalendarSchema = new Schema({
+var HistorySchema = new Schema({
   couple_key: {
     type: String,
     required: true
@@ -15,5 +15,5 @@ var CalendarSchema = new Schema({
   }
 });
 
-var Calendar = mongoose.model("Calendar", CalendarSchema);
-module.exports = Calendar;
+var History = mongoose.model("History", HistorySchema);
+module.exports = History;

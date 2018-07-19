@@ -45,6 +45,13 @@ export const Calendar = ({couple_key, calendars, fetchCalendar}) => (
                             </div>
                         </div>
 
+                         <div className="form-group row">
+                            <label htmlFor="inputTime" className="col-sm-2 col-form-label">Time*</label>
+                            <div className="col-sm-10">
+                            <input type="time" className="form-control" id="inputTime" name="time" placeholder="HH:MM"></input>
+                            </div>
+                        </div>
+
                         
                         <div className="form-group row" >
                             <div className="col-sm-10">

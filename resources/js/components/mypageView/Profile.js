@@ -20,7 +20,6 @@ export const Profile = ({couple_key, email, first_name,last_name,birthday,annive
                      Anniversary: {anniversary} <br></br>
                      Couple key: {couple_key} <br></br>
             </div>
-            <button className="btn btn-primary btn-sm offset-8">Modify</button>
         </div>
     </div>
 )

@@ -1,5 +1,18 @@
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth() +1;
+var yyyy = today.getFullYear();
+
 var express = require("express");
 var app = express();
+
+//for socket.io //////////
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+//New connection will be established after successful login
+// --> go to app.post('/login', ......
+
+////////////////////////
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended:true}));
@@ -54,9 +67,9 @@ mongoose.connect(mongoDBUrl, function(error)
 });
 
 const Album = require('./resources/db/models/AlbumDB.js');
-const HoneyDo = require('./resources/db/models/HoneyDoDB.js');
-const Calendar = require('./resources/db/models/CalendarDB.js');
-const Msg = require('./resources/db/models/MessageDB.js');
+const History = require('./resources/db/models/HistoryDB.js');
+const HoneyDo = require('./resources/db/models/HoneyDoDB.js')
+
 
 /////////////////////////////////////////////////
 
@@ -90,7 +103,7 @@ app.post('/signup', function(req,res,next){
 
 //login with MySQL///////////////////////////
 app.post('/login', function(req,res,next){
-    var login_state = JSON.stringify({email: false});
+    var login_state = JSON.stringify({login: false});
     var loginFail = JSON.parse(login_state);
 
     // connection.query('SELECT * FROM user_info.users WHERE `email` = ? AND `password` = ?', [req.body.email,req.body.password], function (error, results, fields) {
@@ -101,7 +114,35 @@ app.post('/login', function(req,res,next){
         if (results.length == 1) {
             var foundUser = JSON.stringify(results[0]);
             var userData = JSON.parse(foundUser);
+            userData.login = true;
+
+            // socket.io connection begins
+            var url = '/mypage/' + userData.couple_key;
+            io.path(url)
+            io.on('connection', function(socket) {
+                console.log('user connected: ', socket.id);
+             
+                socket.on('disconnect', function(){
+                  console.log('user disconnected: ', socket.id);
+                });
+                
+                socket.on('send_message', function(data){
+                    console.log(data)
+                  //var current = new Date();
+                  //var hr = current.getHours();
+                  //var min = current.getMinutes();
+                  //if (min < 10) {
+                  //    min = "0" + min;
+                  //}
+                  //var currentTime = hr + ":" + min;
+                  var msg = data.name + ' : ' + data.message + '\n' + currentTime + '\n';
+                  io.emit('receive_message', msg);
+                });
+              });
+              ////////////////////////////////////////
+
             res.send(userData)
+
         } else {
             res.send(loginFail);
         }
@@ -111,7 +152,36 @@ app.post('/login', function(req,res,next){
 })
 //////////////////////////////////////////////////////////////////////////////
 
-//Album loading from mongoDB ////////////////////////////////////////////////
+//Album control from mongoDB ////////////////////////////////////////////////
+app.post('/albumModify/:id', function(req,res){
+    if (req.body.date) {
+        Album.update({'_id' : req.params.id},{ $set: { date: req.body.date }},function(err, data){
+            if(err){
+                console.log(err);
+            } 
+        })
+    }
+    if (req.body.descr) {
+        Album.update({'_id' : req.params.id},{ $set: { descr: req.body.descr }},function(err, data){
+            if(err){
+                    console.log(err);
+            } 
+        })
+    }
+    console.log("photo data modified");
+})
+
+app.post('/albumDelete/:id', function(req,res){
+    Album.remove({'_id' : req.params.id})
+    .exec(function(err, data){
+		if(err){
+			console.log(err);
+		} else {
+            console.log("The photo is deleted from your album");
+        }
+	});    
+})
+
 app.post('/albumUpload', function(req,res){
     var couple_key = JSON.stringify(req.body.couple_key);
     var newAlbum = {
@@ -125,7 +195,7 @@ app.post('/albumUpload', function(req,res){
         if(err) {
             console.log(err)
         }
-		console.log("Record Added");
+        console.log("Record Added");
     })
 })
 
@@ -142,25 +212,68 @@ app.post('/album', function(req, res){
 })
 /////////////////////////////////////////////////////////////////////////////
 
-//Add honeyDo to mongoDB ////////////////////////////////////////////////
-app.post('/honeyDoAdd', function(req,res){
+
+//Add Calendar Event to mongoDB ////////////////////////////////////////////////
+app.post('/historyAdd', function(req,res){
+    var couple_key = JSON.stringify(req.body.couple_key);
+    var newEvent = {
+        'couple_key': couple_key,
+        'event': req.body.event,
+        'date': req.body.date  
+    }
+
+    History.create(newEvent, function(err, results){
+        if(err) {
+            console.log(err)
+        }
+		console.log("New event Added");
+    })
+})
+
+
+app.post('/history', function(req, res){
+    var couple_key = JSON.stringify(req.body.couple_key);
+    var thisMonth = parseInt(req.body.month)
+    History.find({'couple_key': couple_key, 'date': {"$gte": new Date(2018,thisMonth),"$lt": new Date(2018,thisMonth+1)}}, function(err, results){
+        if (err) {
+            console.log(err);
+        }
+        res.send(results)
+    })
+})
+
+
+/////////////////////////////////////////////////////////////////////
+
+
+//////honey Do////////////////////////
+app.post('/honeydoDelete/:id', function(req,res){
+    HoneyDo.remove({'_id' : req.params.id})
+    .exec(function(err, data){
+		if(err){
+			console.log(err);
+		} else {
+            console.log("HoneyDo item is deleted");
+            res.send(data)
+        }
+	});    
+})
+
+app.post('/honeydoAdd', function(req,res){
     var couple_key = JSON.stringify(req.body.couple_key);
     var newHoneyDo = {
-        couple_key:couple_key,
-        task: req.body.task,
-        assigned_to: req.body.assigned_to,
-        due_date: req.body.due_date 
+        couple_key: couple_key,
+        honey_do: req.body.honey_do 
     }
 
     HoneyDo.create(newHoneyDo, function(err, results){
         if(err) {
             console.log(err)
         }
-		console.log("HoneyDo Added");
+		console.log("New Todo item Added");
     })
 })
 
-//load honeyDo MongoDB with matching couple_key
 app.post('/honeyDo', function(req, res){
     var couple_key = JSON.stringify(req.body.couple_key);
 
@@ -171,69 +284,8 @@ app.post('/honeyDo', function(req, res){
         res.send(results)
     })
 })
-/////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////
 
-//Add Calendar Event to mongoDB ////////////////////////////////////////////////
-app.post('/calendarAdd', function(req,res){
-    var couple_key = JSON.stringify(req.body.couple_key);
-    var newCalendar = {
-        couple_key: couple_key,
-        event: req.body.event,
-        date: req.body.date,
-
-    }
-
-    Calendar.create(newCalendar, function(err, results){
-        if(err) {
-            console.log(err)
-        }
-		console.log("Calendar Event Added");
-    })
-})
-
-//load Calendar from MongoDB with matching couple_key
-app.post('/calendar', function(req, res){
-    var couple_key = JSON.stringify(req.body.couple_key);
-
-    Calendar.find({'couple_key': couple_key}, function(err, results){
-        if (err) {
-            console.log(err);
-        }
-        res.send(results)
-    })
-})
-/////////////////////////////////////////////////////////////////////////////
-
-//Add message to mongoDB ////////////////////////////////////////////////
-app.post('/msgAdd', function(req,res){
-    var couple_key = JSON.stringify(req.body.couple_key);
-    var newMsg = {
-        couple_key:couple_key,
-        date:'',
-        poster:'',
-        msg:''
-    }
-
-    Msg.create(newAlbum, function(err, results){
-        if(err) {
-            console.log(err)
-        }
-		console.log("Message Added");
-    })
-})
-
-//load messages from MongoDB with matching couple_key
-app.post('/msg', function(req, res){
-    var couple_key = JSON.stringify(req.body.couple_key);
-
-    Msg.find({'couple_key': couple_key}, function(err, results){
-        if (err) {
-            console.log(err);
-        }
-        res.send(results)
-    })
-})
-/////////////////////////////////////////////////////////////////////////////
 
 // Default route.
 app.use('/', function (req, res) {
@@ -242,6 +294,6 @@ app.use('/', function (req, res) {
 
 //Listening
 var PORT = process.env.PORT || 3000;
-app.listen(PORT, function(){
+http.listen(PORT, function(){
     console.log("listening on " + PORT);
 });
