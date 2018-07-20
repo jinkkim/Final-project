@@ -9,6 +9,27 @@ var app = express();
 //for socket.io //////////
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+console.log(io.path())
+
+// socket.io connection begins
+io.on('connection', function(socket) {
+    console.log('user connected: ', socket.id);
+ 
+    socket.join(socket.handshake.query.couple_key);
+    socket.on('message', function(...args){
+        console.log(...args)
+        io.to(socket.handshake.query.couple_key).emit('message', ...args);
+      });
+
+    // socket.on(socket.handshake.query.couple_key, function(data) {
+    //     console.log(data, socket.handshake.query.couple_key, 'something')
+    //     socket.emit(socket.handshake.query.couple_key, data)
+    // });
+
+    socket.on('disconnect', function(){
+      console.log('user disconnected: ', socket.id);
+    });
+  });
 //New connection will be established after successful login
 // --> go to app.post('/login', ......
 
@@ -115,30 +136,7 @@ app.post('/login', function(req,res,next){
             var foundUser = JSON.stringify(results[0]);
             var userData = JSON.parse(foundUser);
             userData.login = true;
-
-            // socket.io connection begins
-            var url = '/mypage/' + userData.couple_key;
-            io.path(url)
-            io.on('connection', function(socket) {
-                console.log('user connected: ', socket.id);
-             
-                socket.on('disconnect', function(){
-                  console.log('user disconnected: ', socket.id);
-                });
-                
-                socket.on('send_message', function(data){
-                    console.log(data)
-                  //var current = new Date();
-                  //var hr = current.getHours();
-                  //var min = current.getMinutes();
-                  //if (min < 10) {
-                  //    min = "0" + min;
-                  //}
-                  //var currentTime = hr + ":" + min;
-                  var msg = data.name + ' : ' + data.message + '\n' + currentTime + '\n';
-                  io.emit('receive_message', msg);
-                });
-              });
+            
               ////////////////////////////////////////
 
             res.send(userData)

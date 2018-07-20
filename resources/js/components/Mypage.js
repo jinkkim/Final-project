@@ -28,7 +28,7 @@ export class Mypage extends Component {
             photo_couple: this.props.photo_couple,
             last_one:[],
             albums: [],
-            socket_url: 'http://localhost:3000/mypage/' + this.props.couple_key,
+            socket_url: 'http://localhost:3000',
             //socket_url: '--heroku address url' + this.props.couple_key,
             messages:["Tigger: Test\n Pooh: trial\n"],
             message:'',
@@ -55,23 +55,21 @@ export class Mypage extends Component {
 
         }
 
+        console.log(this.state.socket_url, props.couple_key)
         //establish socket.io connection (client side)
-        this.socket = io(this.state.socket_url)
-        this.socket.on('receive_message', (msg)=> {
-            addMessage(msg)
+        this.socket = io(this.state.socket_url, {
+            query: {
+              couple_key: props.couple_key
+            }
+          });
+        this.socket.on('message', (data)=> {
+            addMessage(data)
         })
          
-        const addMessage = msg => {
-            console.log(msg);
-            this.setState({messages: [...this.state.messages, msg]});
-            console.log(this.state.messages);
-        }          
+        const addMessage = data => {
+            console.log(data);
 
-        this.handleMessenger = event => {
-            event.preventDefault();
-            var data = {name:this.state.first_name, message: this.state.message};
-            this.socket.emit('send_message', data);
-            
+                        
             //for test only
             var current = new Date();
             var hr = current.getHours();
@@ -81,9 +79,21 @@ export class Mypage extends Component {
             }
             var currentTime = hr + ":" + min;
             var msg = data.name + ' : ' + data.message + '\t\t\t\t' + currentTime + '\n';
+            
             this.setState({messages: [...this.state.messages, msg]});
+            console.log(this.state.messages);
+        }          
+
+        this.handleMessenger = event => {
+            event.preventDefault();
+            var data = {name:this.state.first_name, message: this.state.message};
+            this.socket.emit('message', data);
+
             ////////////////
             this.setState({message: ''});
+        }
+
+        
         
 
         this.fetchAlbum = this.fetchAlbum.bind(this);
@@ -91,8 +101,6 @@ export class Mypage extends Component {
         this.fetchHoneyDo = this.fetchHoneyDo.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleCheck = this.handleCheck.bind(this);
-
-        }
     }
 
     componentDidMount() {
