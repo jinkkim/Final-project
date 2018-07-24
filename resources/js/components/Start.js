@@ -240,7 +240,7 @@ export class Start extends Component {
                 </div>           
             </div>           
 
-                        <div id="our_team" className="team-main pad-top-100 pad-bottom-100 parallax">
+            <div id="our_team" className="team-main pad-top-100 pad-bottom-100 parallax">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">

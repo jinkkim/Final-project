@@ -1339,3 +1339,6 @@ textarea:focus, input:focus, select:focus, .bootstrap-select .dropdown-toggle:fo
 	color: #2BBBAD;		
 }
 
+h2 text-default {
+    font: gardenia;
+}
